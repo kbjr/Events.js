@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+	
+	<!-- Data Tags -->
+	<title>Events.js testing ground</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+</head>
+<body>
+	
+	<div id="wrapper">
+	
+	</div>
+	
+	<!-- JavaScript Includes -->
+	<script type="text/javascript" charset="utf-8" src="events.js"></script>
+	<script type="text/javascript">
+	
+		Events.bind(window, 'load', function(e) {
+			Events.log('Window load event fired');
+		});
+		
+		Events.bind(document, 'mouseenter', function(e) {
+			Events.log('Document mouseenter event fired');
+		});
+		
+		Events.bind(document, 'mouseleave', function(e) {
+			Events.log('Document mouseleave event fired');
+		});
+		
+	</script>
+	
+</body>
+</html>
