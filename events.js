@@ -1096,7 +1096,10 @@ window.Events = (new (function() {
 				});
 			};
 		}
-	}())
+	}());
+	
+	// Initialize the hashchange fix
+	HashChangeFix.init();
 	
 })());
 

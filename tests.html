@@ -21,6 +21,10 @@
 			Events.log('Window load event fired');
 		});
 		
+		Events.bind(window, 'hashchange', function(e) {
+			Events.log('Window hashchange event fired');
+		});
+		
 		Events.bind(document, 'mouseenter', function(e) {
 			Events.log('Document mouseenter event fired');
 		});
