@@ -94,22 +94,22 @@ window.Events = (new (function() {
 				return nativeSupport;
 			};
 		}()),
-	
+		
 		/**
-		 * Builds an event object to send to an onhashchange event
+		 * Builds the event objects
 		 *
 		 * @access  private
-		 * @param   string    the "oldURL" value
+		 * @param   string    the oldURL value
+		 * @param   object    extra info to pass in
 		 * @return  object
 		 */
-		buildEventObject = function(old) {
-			return self.buildEventObject({
-				type: 'hashchange',
+		buildEventObject = function(old, info) {
+			return self.buildEventObject('hashchange', { }, merge({
 				oldURL: old,
 				newURL: location + ''
-			});
+			}, (info || { })));
 		},
-		
+	
 		/**
 		 * Call the functions in the stack
 		 *
@@ -117,8 +117,8 @@ window.Events = (new (function() {
 		 * @param   string    the old URL
 		 * @return  mixed
 		 */
-		run = function(old) {
-			var evt = buildEventObject(old), ret;
+		run = function(evt) {
+			var ret;
 			for (var i = 0, c = callStack.length; i < c; i++) {
 				ret = callStack[i].call(window, evt);
 			}
@@ -148,8 +148,8 @@ window.Events = (new (function() {
 							var current = fetch();
 							if (current !== lastValue) {
 								lastValue = current;
-								if (typeof window.onhashchange === 'function' && ! supportsOnhashchange()) {
-									window.onhashchange(buildEventObject(lastLocation));
+								if (! supportsOnhashchange()) {
+									self2.dispatchEvent(lastLocation);
 								}
 								lastLocation = location + '';
 							}
@@ -163,7 +163,21 @@ window.Events = (new (function() {
 					}
 				}
 			};
-		}());
+		}()),
+		
+		/**
+		 * The event function
+		 */
+		eventFunction = function(e) {
+			var e = e || window.event,
+			isEmulated = e._isEmulated || false;
+			// If support is marked as false, but we get a native event, stop the poller
+			if (! supportsOnhashchange() && ! isEmulated) {
+				supportsOnhashchange(true);
+				poller.stop();
+			}
+			return run(e);
+		};
 	
 		/**
 		 * Initialize the hashchange fix engine
@@ -172,34 +186,12 @@ window.Events = (new (function() {
 		 * @return  void
 		 */
 		self2.init = function() {
-			var eventFunction = function(e) {
-				var e = e || window.event,
-				isEmulated = e._isEmulated || false;
-				// If support is marked as false, but we get a native event, stop the poller
-				if (! supportsOnhashchange() && ! isEmulated) {
-					supportsOnhashchange(true);
-					poller.stop();
-				}
-				if (typeof self2.onchange === 'function') {
-					return run();
-				}
-			};
 			// Attach the listener
-			
+			attachListener(window, 'hashchange', eventFunction);
 			// If onhashchange is not native, add it
 			if (! supportsOnhashchange()) {
 				poller.start();
 			}
-		};
-	
-		/**
-		 * Invoke the event
-		 *
-		 * @access  public
-		 * @return  mixed
-		 */
-		self2.invokeEvent = function() {
-			return window.onhashchange(buildEventObject(window.location + ''));
 		};
 	
 		/**
@@ -226,9 +218,7 @@ window.Events = (new (function() {
 		 * Invoke the event
 		 */
 		self2.dispatchEvent = function(info) {
-			var evt = self.buildEventObject('hashchange', {
-				
-			});
+			return run(buildEventObject(location + '', info));
 		};
 
 	})()),
