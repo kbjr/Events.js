@@ -58,6 +58,34 @@ Tests if a special event has been defined.
     });
 }</code></pre>
 
+h4. void Events.specialEvents.add ( string event, object definition )
+
+Creates a special event. Special events can be defined in two different ways.
+
+First, you can give an @attachesTo@ event and an @eventTest@ function. In this format, whenever the @attachesTo@ event is fired, the @eventTest@ function will be run, and if it returns @true@, the special event is fired.
+
+<pre><code>var mouseIsClicked = false;
+Events.specialEvents.add('drag', {
+    attachesTo: 'mousemove',
+    eventTest: function(evt) {
+        return mouseIsClicked;
+    }
+});</code></pre>
+
+The second format gives you a little more direct control. You provide @bind@, @unbind@, and @invoke@ functions which are called at the appropriate times, and your functions then do all the direct event handling.
+
+<pre><code>Events.specialEvents.add('drop', {
+    bind: function(target, func) {
+        Events.bind(target, 'mouseup', func);
+    },
+    unbind: function(target, func) {
+        Events.unbind(target, 'mouseup');
+    },
+    invoke: function(target) {
+        Events.invoke(target, 'mouseup');
+    }
+});</code></pre>
+
 h4. void Events.log ( mixed item[, ... ])
 
 A standardized abstraction of @console.log()@. Prepends a human-readable timestamp to the output.
