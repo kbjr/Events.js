@@ -15,6 +15,25 @@ h2. Features
 * Cross-browser support for some commonly unsupported events (hashchange, mouseenter, mouseleave)
 * System for defining custom events
 
+h2. Samples
+
+<pre><code>(function() {
+
+    // Wait for the DOM to load before adding our hover events
+    Events.bind(window, 'load', function(e) {
+        var elem = document.getElementById('myElement');
+        // Do something when we hover over the element
+        Events.bind(elem, 'mouseenter', function(e) {
+            doSomethingCool();
+        });
+        // And when we leave...
+        Events.bind(elem, 'mouseleave', function(e) {
+            undoSomethingCool();
+        });
+    });
+
+}());</code></pre>
+
 h2. API
 
 h3. Functions
@@ -117,25 +136,8 @@ Events.bind(myElement, 'mouseleave.myNamespace', function() {
     // Undo something ...
 });</code><pre>
 
+h3. Special Events
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Special events are a way of adding non-supported events. For example, the @mouseenter@ and @mouseleave@ events are IE proprietary. Therefore, in order to make the cross-browser compatible, they were implemented as special events. The @hashchange@ event is alse handled with specialEvents. The specific function definitions for dealing with special events is above in the Functions section.
 
 
