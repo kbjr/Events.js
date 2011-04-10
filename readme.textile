@@ -17,7 +17,7 @@ h2. Features
 
 h2. API
 
-h3. void Events.bind ( object target, string event, function callback )
+<h4><code>void Events.bind ( object target, string event, function callback )</code></h4>
 
 Bind an event function to the given target.
 
