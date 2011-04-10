@@ -3,7 +3,7 @@ h1. Events.js
 h3. A super-awesome JavaScript event handler library
 
 Author: James Brumond
-Version: 0.1.1-beta
+Version: 0.2.1-beta
 
 Copyright 2011 James Brumond
 Dual licensed under MIT and GPL
@@ -14,6 +14,7 @@ h2. Features
 * Event namespacing
 * Cross-browser support for some commonly unsupported events (hashchange, mouseenter, mouseleave)
 * System for defining custom events
+* Keystroke handling support
 
 h2. Samples
 
@@ -31,6 +32,16 @@ h2. Samples
             undoSomethingCool();
         });
     });
+
+	// Add a keyboard alternative:
+	// When the user hits Ctrl+A, call our cool function;
+	// when Alt+A is pressed, call our uncool function
+	Events.bind(document, 'keystroke.Ctrl+A', function(e) {
+		doSomethingCool();
+	});
+	Events.bind(document, 'keystroke.Alt+A', function(e) {
+		undoSomethingCool();
+	});
 
 }());</code></pre>
 
@@ -140,4 +151,47 @@ h3. Special Events
 
 Special events are a way of adding non-supported events. For example, the @mouseenter@ and @mouseleave@ events are IE proprietary. Therefore, in order to make the cross-browser compatible, they were implemented as special events. The @hashchange@ event is alse handled with specialEvents. The specific function definitions for dealing with special events is above in the Functions section.
 
+h3. Keystroke Handling
+
+Events.js also has support for a custom event called "keystroke". When using this event, the first namespace is the key combination to respond to. For example, to respond to Ctrl+Shift+D, you would bind to the event "keystroke.Ctrl+Shift+D". Like this:
+
+<pre><code>Events.bind(document, 'keystroke.Ctrl+Shift+D', function(e) {
+	doSomethingCool();
+});</code></pre>
+
+The key combinations are case insensitive. The following keys are supported:
+
+* Modifiers (ctrl, shift, alt, meta)
+* Alpha-numeric characters (a-z, 0-9)
+* Function Keys (F1 - F12)
+* Special Keys
+** esc
+** escape
+** tab
+** space
+** return
+** enter
+** backspace
+
+** scrolllock (scroll_lock, scroll)
+** capslock (caps_lock, caps)
+** numlock (num_lock, num)
+	
+** pause
+** break
+	
+** insert
+** home
+** delete
+** end
+	
+** pageup (page_up, pu)
+** pagedown (page_down, pd)
+
+** left
+** up
+** right
+** down
+* Symbols
+<pre><code>`~!@#$%^&*()-_=+;:'",<.>/?\|</code></pre>
 

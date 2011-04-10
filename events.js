@@ -6,13 +6,13 @@
 | A super-awesome JavaScript event handler library.
 |
 | @author     James Brumond
-| @version    0.1.1-beta
+| @version    0.2.1-beta
 | @copyright  Copyright 2011 James Brumond
 | @license    Dual licensed under MIT and GPL
 |
 */
 
-window.Events = (new (function() {
+var Events = (new (function() {
 	
 	var
 	self = this,
@@ -41,6 +41,12 @@ window.Events = (new (function() {
 			},
 			invoke: function(target) {
 				HashChangeFix.despatchEvent();
+			}
+		},
+		keystroke: {
+			attachesTo: 'keydown',
+			eventTest: function(evt) {
+				return Keystroke.runTest(evt, evt.getNamespace().split('.')[0]);
 			}
 		}
 	},
@@ -228,6 +234,189 @@ window.Events = (new (function() {
 // ----------------------------------------------------------------------------
 
 	/**
+	 * Keystroke handler object
+	 *
+	 * @access  private
+	 *
+	 * Based on the keyboard shortcuts library by Binny V A
+	 * @link     http://www.openjs.com/scripts/events/keyboard_shortcuts/
+	 * @license  BSD License
+	 */
+	Keystroke = (function() {
+
+		var defaults = {
+			type: 'keydown',
+			propagate: false,
+			disable_in_input: true,
+			target: document,
+			keycode: false
+		},
+
+		// Work around for stupid Shift key bug created by using lowercase -
+		// as a result the shift+num combination was broken
+		shift_nums = {
+			'`': '~', '1': '!',
+			'2': '@', '3': '#',
+			'4': '$', '5': '%',
+			'6': '^', '7': '&',
+			'8': '*', '9': '(',
+			'0': ')', '-': '_',
+			'=': '+', ';': ':',
+			'\'': '"', ',': '<',
+			'.': '>', '/': '?',
+			'\\': '|'
+		},
+
+		// Special Keys - and their codes
+		special_keys = {
+			'esc':       27,
+			'escape':    27,
+			'tab':       9,
+			'space':     32,
+			'return':    13,
+			'enter':     13,
+			'backspace': 8,
+
+			'scrolllock':  145,
+			'scroll_lock': 145,
+			'scroll':      145,
+			'capslock':    20,
+			'caps_lock':   20,
+			'caps':        20,
+			'numlock':     144,
+			'num_lock':    144,
+			'num':         144,
+	
+			'pause': 19,
+			'break': 19,
+	
+			'insert': 45,
+			'home':   36,
+			'delete': 46,
+			'end':    35,
+	
+			'pageup':    33,
+			'page_up':   33,
+			'pu':        33,
+			'pagedown':  34,
+			'page_down': 34,
+			'pd':        34,
+
+			'left':  37,
+			'up':    38,
+			'right': 39,
+			'down':  40,
+
+			'f1':  112,
+			'f2':  113,
+			'f3':  114,
+			'f4':  115,
+			'f5':  116,
+			'f6':  117,
+			'f7':  118,
+			'f8':  119,
+			'f9':  120,
+			'f10': 121,
+			'f11': 122,
+			'f12': 123
+		},
+
+		modifiers = function() {
+			return { 
+				shift: { wanted:false, pressed:false },
+				ctrl:  { wanted:false, pressed:false },
+				alt:   { wanted:false, pressed:false },
+				meta:  { wanted:false, pressed:false }	// Meta is Mac specific
+			};
+		},
+
+		runTest = function(e, combo, opt) {
+			var keys, kp, element, character, code, mods;
+			
+			// Don't enable shortcut keys in Input, Textarea fields
+			if(opt['disable_in_input']) {
+				element = e.currentTarget;
+				if (element && element.tagName && (element.tagName.toLowerCase() === 'input' ||
+				element.tagName.toLowerCase() === 'textarea') && element !== opt.target) { return; }
+			}
+
+			// Find Which key is pressed
+			if (e.keyCode) { code = e.keyCode; }
+			else if (e.which) { code = e.which; }
+			character = String.fromCharCode(code).toLowerCase();
+
+			if (code === 188) { character = ','; } // If the user presses , when the type is onkeydown
+			if (code === 190) { character = '.'; } // If the user presses . when the type is onkeydown
+
+			keys = combo.split('+');
+			// Key Pressed - counts the number of valid keypresses -
+			// if it is same as the number of keys, the shortcut function is invoked
+			kp = 0;
+
+			// Build the modifiers list
+			mods = modifiers();
+			if (e.ctrlKey) { mods.ctrl.pressed = true; }
+			if (e.shiftKey) { mods.shift.pressed = true; }
+			if (e.altKey) { mods.alt.pressed = true; }
+			if (e.metaKey) { mods.meta.pressed = true; }
+				        
+			for (var i = 0; i < keys.length; i++) {
+				var k = keys[i];
+				//Modifiers
+				if(k === 'ctrl' || k === 'control') {
+					kp++;
+					mods.ctrl.wanted = true;
+				} else if(k === 'shift') {
+					kp++;
+					mods.shift.wanted = true;
+				} else if(k === 'alt') {
+					kp++;
+					mods.alt.wanted = true;
+				} else if(k === 'meta') {
+					kp++;
+					mods.meta.wanted = true;
+				} else if(k.length > 1) { // If it is a special key
+					if(special_keys[k] === code) { kp++; }
+				} else if(opt['keycode']) {
+					if(opt['keycode'] === code) { kp++; }
+				} else { // The special keys did not match
+					if(character === k) { kp++; }
+					else {
+						// Stupid Shift key bug created by using lowercase
+						if(shift_nums[character] && e.shiftKey) {
+							character = shift_nums[character]; 
+							if(character === k) { kp++; }
+						}
+					}
+				}
+			}
+	
+			// Test for success
+			return (kp === keys.length && mods.ctrl.pressed === mods.ctrl.wanted &&
+			mods.shift.pressed === mods.shift.wanted && mods.alt.pressed === mods.alt.wanted &&
+			mods.meta.pressed === mods.meta.wanted);
+		};
+		
+		// Expose
+		return {
+			runTest: function(evt, combo, options) {
+				var options = options || { };
+				for (var i in defaults) {
+					if (defaults.hasOwnProperty(i)) {
+						if (options[i] === undefined) { options[i] = defaults[i]; }
+					}
+				}
+				return runTest(evt, combo.toLowerCase(), options);
+			},
+			defaults: defaults
+		};
+	}()),
+	
+	
+	
+// ----------------------------------------------------------------------------
+
+	/**
 	 * EventController Class
 	 * 
 	 * @access  private
@@ -251,6 +440,27 @@ window.Events = (new (function() {
 				self2[i] = event[i];
 			}
 		}
+		
+		/**
+		 * Get the current event's namespace
+		 *
+		 * @access  public
+		 * @return  string
+		 */
+		self2.getNamespace = function() {
+			return namespace;
+		};
+		
+		/**
+		 * Set the namespace
+		 *
+		 * @access  public
+		 * @param   string    the namespace
+		 * @return  void
+		 */
+		self2._setNamespace = function(ns) {
+			namespace = ns;
+		};
 	
 		/**
 		 * Get the mouse position of the event
@@ -373,6 +583,20 @@ window.Events = (new (function() {
 		self.call = function(scope, event) {
 			return func.call(scope, event);
 		};
+		
+		/**
+		 * Run the event function. This function deals with more then the .call() method
+		 * and should be used as the "public" method.
+		 *
+		 * @access  public
+		 * @param   mixed     call scope (this)
+		 * @param   object    the event object
+		 * @param   function  a test function if needed
+		 * @return  mixed
+		 */
+		self.run = function(scope, event) {
+			
+		};
 
 	},
 
@@ -457,19 +681,27 @@ window.Events = (new (function() {
 		 */
 		self2.run = function(evt, controller) {
 			var controller = controller || new EventController(evt, target),
+			namespace = [ ],
+			eventTest = (event in specialEvents && specialEvents[event].eventTest) ?
+				specialEvents[event].eventTest : function() { return true; },
 			runFuncs = function(lvl) {
 				var result = null;
 				for (var i in lvl) {
 					if (lvl.hasOwnProperty(i)) {
+						controller._setNamespace(namespace.join('.'));
 						if (i === '.') {
-							for (var j = 0, c = lvl[i].length; j < c; j++) {
-								result = lvl[i][j].call(target, controller);
-								if (result === false) {
-									controller.cancelDefault();
+							if (eventTest(controller)) {
+								for (var j = 0, c = lvl[i].length; j < c; j++) {
+									result = lvl[i][j].call(target, controller);
+									if (result === false) {
+										controller.cancelDefault();
+									}
 								}
 							}
 						} else {
+							namespace.push(i);
 							result = runFuncs(lvl[i]);
+							namespace.pop();
 						}
 					}
 				}
@@ -494,17 +726,7 @@ window.Events = (new (function() {
 			 * @return  boolean
 			 */
 			runEvent = function(evt) {
-				var
-				run = true,
-				evt = evt || window.event,
-				cont = false;
-				if (! hasBinds) {
-					cont = new EventController(evt, target);
-					run =! spec.eventTest(cont);
-				}
-				if (run) {
-					return self2.run(evt);
-				}
+				return self2.run(evt || window.event);
 			};
 			
 			/**

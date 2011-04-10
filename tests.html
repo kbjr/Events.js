@@ -82,8 +82,8 @@
 			redDiv.style.backgroundColor = '#a00';
 		});
 		
-		Events.bind(window, 'onbeforeunload', function(e) {
-			return 'Leaving??';
+		Events.bind(document, 'keystroke.A', function(e) {
+			Events.log('Keystroke "A" event fired');
 		});
 		
 	</script>
