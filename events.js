@@ -23,13 +23,13 @@ var Events = (new (function() {
 		mouseenter: {
 			attachesTo: 'mouseover',
 			eventTest: function(evt) {
-				return (withinElement(evt, evt.originalTarget(), 'fromElement'));
+				return (! withinElement(evt, evt.originalTarget(), 'fromElement'));
 			}
 		},
 		mouseleave: {
 			attachesTo: 'mouseout',
 			eventTest: function(evt) {
-				return (withinElement(evt, evt.originalTarget(), 'toElement'));
+				return (! withinElement(evt, evt.originalTarget(), 'toElement'));
 			}
 		},
 		hashchange: {
@@ -582,20 +582,6 @@ var Events = (new (function() {
 		 */
 		self.call = function(scope, event) {
 			return func.call(scope, event);
-		};
-		
-		/**
-		 * Run the event function. This function deals with more then the .call() method
-		 * and should be used as the "public" method.
-		 *
-		 * @access  public
-		 * @param   mixed     call scope (this)
-		 * @param   object    the event object
-		 * @param   function  a test function if needed
-		 * @return  mixed
-		 */
-		self.run = function(scope, event) {
-			
 		};
 
 	},
