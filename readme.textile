@@ -15,6 +15,7 @@ h2. Features
 * Cross-browser support for some commonly unsupported events (hashchange, mouseenter, mouseleave)
 * System for defining custom events
 * Keystroke handling support
+* Very lightweight (only 3.9 KB minified and gziped)
 
 h2. Samples
 
