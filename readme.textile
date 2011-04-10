@@ -15,23 +15,23 @@ h2. Features
 * Cross-browser support for some commonly unsupported events (hashchange, mouseenter, mouseleave)
 * System for defining custom events
 
-h3. API
+h2. API
 
-h4. void Events.bind ( object target, string event, function callback )
+h3. void Events.bind ( object target, string event, function callback )
 
 Bind an event function to the given target.
 
-h5. Example
+h4. Example
 
 <pre><code>Events.bind(window, 'load', function(e) {
 	// Do something on page load
 });</code></pre>
 
-h4. void Events.unbind ( object target[, string event ])
+h3. void Events.unbind ( object target[, string event ])
 
 Unbind event functions from the given target. If no event is given, all events will be unbound.
 
-h5. Example
+h4. Example
 
 <pre><code>Events.unbind(window, 'load');</code></pre>
 
