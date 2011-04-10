@@ -23,13 +23,13 @@ window.Events = (new (function() {
 		mouseenter: {
 			attachesTo: 'mouseover',
 			eventTest: function(evt) {
-				return (! withinElement(evt, evt.originalTarget(), 'fromElement'));
+				return (withinElement(evt, evt.originalTarget(), 'fromElement'));
 			}
 		},
 		mouseleave: {
 			attachesTo: 'mouseout',
 			eventTest: function(evt) {
-				return (! withinElement(evt, evt.originalTarget(), 'toElement'));
+				return (withinElement(evt, evt.originalTarget(), 'toElement'));
 			}
 		},
 		hashchange: {
@@ -458,22 +458,25 @@ window.Events = (new (function() {
 		self2.run = function(evt, controller) {
 			var controller = controller || new EventController(evt, target),
 			runFuncs = function(lvl) {
+				var result = null;
 				for (var i in lvl) {
 					if (lvl.hasOwnProperty(i)) {
 						if (i === '.') {
 							for (var j = 0, c = lvl[i].length; j < c; j++) {
-								if (lvl[i][j].call(target, controller) === false) {
+								result = lvl[i][j].call(target, controller);
+								if (result === false) {
 									controller.cancelDefault();
 								}
 							}
 						} else {
-							runFuncs(lvl[i]);
+							result = runFuncs(lvl[i]);
 						}
 					}
 				}
+				return result;
 			};
-			runFuncs(funcs);
-			return (! controller.isDefaultCanceled());
+			var result = runFuncs(funcs);
+			return (controller.isDefaultCanceled() ? false : result);
 		};
 		
 	// ----------------------------------------------------------------------------
@@ -789,15 +792,19 @@ window.Events = (new (function() {
 	},
 	
 	/**
-	 * Check if an event occurred inside of a given element
+	 * Check if an event came from inside of a given element
 	 *
 	 * @access  private
 	 * @param   object    the event object
 	 * @param   Element   the element in question
+	 * @param   string    the fallback property if relatedTarget is not defined
 	 * @return  boolean
 	 */
-	withinElement = function(evt, elem) {
-		var targ = getEventTarget(evt), ret;
+	withinElement = function(evt, elem, fallback) {
+		var targ = evt.relatedTarget, ret;
+		if (targ == null) {
+			targ = evt[fallback] || null;
+		}
 		try {
 			while (targ && targ !== elem) {
 				targ = targ.parentNode;

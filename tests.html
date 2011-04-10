@@ -6,16 +6,63 @@
 	<title>Events.js testing ground</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	
+	<style type="text/css">
+		
+		#wrapper {
+			padding: 35px;
+		}
+		
+		#div1 {
+			width: 375px;
+			height: 200px;
+			background: #a00;
+			position: relative;
+		}
+		
+		#div2, #div3 {
+			width: 100px;
+			height: 100px;
+			padding: 25px;
+			background: #0a0;
+			position: absolute;
+			top: 25px;
+		}
+		
+		#div2 {
+			left: 25px;
+		}
+		
+		#div3 {
+			right: 25px;
+		}
+		
+		#div21, #div31 {
+			width: 100px;
+			height: 100px;
+			background: #00a;
+		}
+		
+	</style>
+	
 </head>
 <body>
 	
 	<div id="wrapper">
-	
+		<div id="div1">
+			<div id="div2">
+				<div id="div21"><a href="#"> </a></div>
+			</div>
+			<div id="div3">
+				<div id="div31"><a href="#"> </a></div>
+			</div>
+		</div>
 	</div>
 	
 	<!-- JavaScript Includes -->
 	<script type="text/javascript" charset="utf-8" src="events.js"></script>
 	<script type="text/javascript">
+	
+		var redDiv = document.getElementById('div1');
 	
 		Events.bind(window, 'load', function(e) {
 			Events.log('Window load event fired');
@@ -25,12 +72,18 @@
 			Events.log('Window hashchange event fired');
 		});
 		
-		Events.bind(document, 'mouseenter', function(e) {
-			Events.log('Document mouseenter event fired');
+		Events.bind(redDiv, 'mouseenter', function(e) {
+			Events.log('Red div mouseenter event fired');
+			redDiv.style.backgroundColor = '#c00';
 		});
 		
-		Events.bind(document, 'mouseleave', function(e) {
-			Events.log('Document mouseleave event fired');
+		Events.bind(redDiv, 'mouseleave', function(e) {
+			Events.log('Red div mouseleave event fired');
+			redDiv.style.backgroundColor = '#a00';
+		});
+		
+		Events.bind(window, 'onbeforeunload', function(e) {
+			return 'Leaving??';
 		});
 		
 	</script>
