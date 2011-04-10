@@ -23,8 +23,6 @@ h4. void Events.bind ( object target, string event, function callback )
 
 Bind an event function to the given target.
 
-h5. Example
-
 <pre><code>Events.bind(window, 'load', function(e) {
     // Do something on page load
 });</code></pre>
@@ -33,15 +31,11 @@ h4. void Events.unbind ( object target[, string event ])
 
 Unbind event functions from the given target. If no event is given, all events will be unbound.
 
-h5. Example
-
 <pre><code>Events.unbind(window, 'load');</code></pre>
 
-h4. void Events.invoke ( object target,[ string event ])
+h4. void Events.invoke ( object target[, string event[, object info ]])
 
-Invoke an event.
-
-h5. Example
+Invoke an event. If given, the properties of the info object will be passed on to the event object.
 
 <pre><code>Events.invoke(window, 'load');</code></pre>
 
@@ -49,18 +43,24 @@ h4. object Events.buildEventObject ( string type[, object info[, object extra ]]
 
 Create an event object. @type@ is the event type, such as "load" or "mouseover". @info@ is information about the event such as the mouse position during the event. Which values are needed changes based on the event type. @extra@ is for any other values you may want to add onto the event object.
 
-h5. Example
-
 <pre><code>var myOnloadEvent = Events.createEventObject('load');
 var myKeypressEvent = Events.createEventObject('keypress', {
     ctrlKey: true
 });</code></pre>
 
+h4. boolean Events.specialEvents.exists ( string event )
+
+Tests if a special event has been defined.
+
+<pre><code>if (Events.specialEvents.exists('mouseenter')) {
+    Events.bind(myElement, 'mouseenter', function() {
+        doSomethingCool();
+    });
+}</code></pre>
+
 h4. void Events.log ( mixed item[, ... ])
 
 A standardized abstraction of @console.log()@. Prepends a human-readable timestamp to the output.
-
-h5. Exmaple
 
 <pre><code>Events.bind(window, 'load', function(e) {
     Events.log('window onload event fired');
