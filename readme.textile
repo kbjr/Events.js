@@ -172,22 +172,17 @@ The key combinations are case insensitive. The following keys are supported:
 ** return
 ** enter
 ** backspace
-
 ** scrolllock (scroll_lock, scroll)
 ** capslock (caps_lock, caps)
 ** numlock (num_lock, num)
-    
 ** pause
 ** break
-    
 ** insert
 ** home
 ** delete
 ** end
-    
 ** pageup (page_up, pu)
 ** pagedown (page_down, pd)
-
 ** left
 ** up
 ** right
