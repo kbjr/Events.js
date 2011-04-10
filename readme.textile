@@ -35,6 +35,14 @@ h5. Example
 
 <pre><code>Events.unbind(window, 'load');</code></pre>
 
+h4. void Events.invoke ( object target,[ string event ])
+
+Invoke an event.
+
+h5. Example
+
+<pre><code>Events.invoke(window, 'load');</code></pre>
+
 
 
 h4. void Events.log ( mixed item[, ... ])
@@ -45,7 +53,9 @@ h5. Exmaple
 
 <pre><code>Events.bind(window, 'load', function(e) {
     Events.log('window onload event fired');
-});</code></pre>
+});
+// Outputs something like:
+// [Sun Apr 10 2011 07:02:39 GMT-0700 (PDT)] - window onload event fired</code></pre>
 
 
 
