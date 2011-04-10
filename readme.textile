@@ -86,6 +86,16 @@ The second format gives you a little more direct control. You provide @bind@, @u
     }
 });</code></pre>
 
+h4. void Events.specialEvents.edit ( string event, object definition )
+
+Edit an already defined special event. This function uses the same format as the @add()@ function above.
+
+h4. void Events.specialEvents.del ( string event )
+
+Remove a special event definition.
+
+<pre><code>Events.specialEvents.del('mouseenter');</code></pre>
+
 h4. void Events.log ( mixed item[, ... ])
 
 A standardized abstraction of @console.log()@. Prepends a human-readable timestamp to the output.
