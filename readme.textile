@@ -33,15 +33,15 @@ h2. Samples
         });
     });
 
-	// Add a keyboard alternative:
-	// When the user hits Ctrl+A, call our cool function;
-	// when Alt+A is pressed, call our uncool function
-	Events.bind(document, 'keystroke.Ctrl+A', function(e) {
-		doSomethingCool();
-	});
-	Events.bind(document, 'keystroke.Alt+A', function(e) {
-		undoSomethingCool();
-	});
+    // Add a keyboard alternative:
+    // When the user hits Ctrl+A, call our cool function;
+    // when Alt+A is pressed, call our uncool function
+    Events.bind(document, 'keystroke.Ctrl+A', function(e) {
+        doSomethingCool();
+    });
+    Events.bind(document, 'keystroke.Alt+A', function(e) {
+        undoSomethingCool();
+    });
 
 }());</code></pre>
 
@@ -156,7 +156,7 @@ h3. Keystroke Handling
 Events.js also has support for a custom event called "keystroke". When using this event, the first namespace is the key combination to respond to. For example, to respond to Ctrl+Shift+D, you would bind to the event "keystroke.Ctrl+Shift+D". Like this:
 
 <pre><code>Events.bind(document, 'keystroke.Ctrl+Shift+D', function(e) {
-	doSomethingCool();
+    doSomethingCool();
 });</code></pre>
 
 The key combinations are case insensitive. The following keys are supported:
@@ -176,15 +176,15 @@ The key combinations are case insensitive. The following keys are supported:
 ** scrolllock (scroll_lock, scroll)
 ** capslock (caps_lock, caps)
 ** numlock (num_lock, num)
-	
+    
 ** pause
 ** break
-	
+    
 ** insert
 ** home
 ** delete
 ** end
-	
+    
 ** pageup (page_up, pu)
 ** pagedown (page_down, pd)
 
