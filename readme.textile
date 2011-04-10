@@ -1,33 +1,39 @@
 h1. Events.js
 
-h2. A super-awesome JavaScript event handler library
+h3. A super-awesome JavaScript event handler library
 
 Author: James Brumond
-Version: 0.1.1-dev
+Version: 0.1.1-beta
 
 Copyright 2011 James Brumond
 Dual licensed under MIT and GPL
 
-h5. This library is still under construction. Please be patient.
+h2. Features
 
-h3. Samples :)
+* Simple, easy-to-use API
+* Event namespacing
+* Cross-browser support for some commonly unsupported events (hashchange, mouseenter, mouseleave)
+* System for defining custom events
 
-<pre><code>(function(window) {
+h3. API
 
-  Events.bind(window, 'load', function(e) {
-    console.log('hai there :)');
-  });
-  
-  Events.bind(myElement, 'mouseenter.myHoverEvent', function(e) {
-    doSomethingCool();
-  });
-  
-  Events.bind(myElement, 'mouseleave.myHoverEvent', function(e) {
-    undoSomethingCool();
-  });
-  
-  function removeMyHoverEvent() {
-    Events.unbind(myElement, '*.myHoverEvent');
-  }
+h4. void Events.bind ( object target, string event, function callback )
 
-}(window));</code></pre>
+Bind an event function to the given target.
+
+h5. Example
+
+<pre><code>Events.bind(window, 'load', function(e) {
+	// Do something on page load
+});</code></pre>
+
+h4. void Events.unbind ( object target[, string event ])
+
+Unbind event functions from the given target. If no event is given, all events will be unbound.
+
+h5. Example
+
+<pre><code>Events.unbind(window, 'load');</code></pre>
+
+
+

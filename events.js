@@ -6,7 +6,7 @@
 | A super-awesome JavaScript event handler library.
 |
 | @author     James Brumond
-| @version    0.1.1-dev
+| @version    0.1.1-beta
 | @copyright  Copyright 2011 James Brumond
 | @license    Dual licensed under MIT and GPL
 |
