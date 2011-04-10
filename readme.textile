@@ -106,5 +106,36 @@ A standardized abstraction of @console.log()@. Prepends a human-readable timesta
 // Outputs something like:
 // [Sun Apr 10 2011 07:02:39 GMT-0700 (PDT)] - window onload event fired</code></pre>
 
+h3. Namespacing
+
+Adding namespacing to your events is easy. You just append the namespace you wish to use wherever you use the event name. For example, if you want to namespace the events used in a hover event, you could do it like this:
+
+<pre><code>Events.bind(myElement, 'mouseenter.myNamespace', function() {
+    // Do something ...
+});
+Events.bind(myElement, 'mouseleave.myNamespace', function() {
+    // Undo something ...
+});</code><pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
