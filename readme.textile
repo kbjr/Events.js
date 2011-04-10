@@ -17,6 +17,8 @@ h2. Features
 
 h2. API
 
+h3. Functions
+
 h4. void Events.bind ( object target, string event, function callback )
 
 Bind an event function to the given target.
@@ -43,7 +45,16 @@ h5. Example
 
 <pre><code>Events.invoke(window, 'load');</code></pre>
 
+h4. object Events.buildEventObject ( string type[, object info[, object extra ]])
 
+Create an event object. @type@ is the event type, such as "load" or "mouseover". @info@ is information about the event such as the mouse position during the event. Which values are needed changes based on the event type. @extra@ is for any other values you may want to add onto the event object.
+
+h5. Example
+
+<pre><code>var myOnloadEvent = Events.createEventObject('load');
+var myKeypressEvent = Events.createEventObject('keypress', {
+    ctrlKey: true
+});</code></pre>
 
 h4. void Events.log ( mixed item[, ... ])
 
