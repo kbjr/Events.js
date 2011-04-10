@@ -17,31 +17,31 @@ h2. Features
 
 h2. API
 
-<h4><code>void Events.bind ( object target, string event, function callback )</code></h4>
+h4. void Events.bind ( object target, string event, function callback )
 
 Bind an event function to the given target.
 
-h4. Example
+h5. Example
 
 <pre><code>Events.bind(window, 'load', function(e) {
     // Do something on page load
 });</code></pre>
 
-h3. void Events.unbind ( object target[, string event ])
+h4. void Events.unbind ( object target[, string event ])
 
 Unbind event functions from the given target. If no event is given, all events will be unbound.
 
-h4. Example
+h5. Example
 
 <pre><code>Events.unbind(window, 'load');</code></pre>
 
 
 
-h3. void Events.log ( mixed item[, ... ])
+h4. void Events.log ( mixed item[, ... ])
 
 A standardized abstraction of @console.log()@. Prepends a human-readable timestamp to the output.
 
-h4. Exmaple
+h5. Exmaple
 
 <pre><code>Events.bind(window, 'load', function(e) {
     Events.log('window onload event fired');
