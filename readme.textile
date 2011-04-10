@@ -134,7 +134,7 @@ Adding namespacing to your events is easy. You just append the namespace you wis
 });
 Events.bind(myElement, 'mouseleave.myNamespace', function() {
     // Undo something ...
-});</code><pre>
+});</code></pre>
 
 h3. Special Events
 
