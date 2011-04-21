@@ -415,6 +415,27 @@ var Events = (new (function() {
 	
 	
 // ----------------------------------------------------------------------------
+//  Adds a hasOwnProperty method to an object's prototype
+	
+	addHasOwnProperty = (function() {
+		var hop = function(prop) {
+			if (typeof this == 'undefined' || typeof prop == 'undefined' ||
+				typeof this[prop] == 'undefined') {return false;}
+			return this[prop] !== this.constructor.prototype[prop];
+		};
+		return function(obj) {
+			try {
+				obj.prototype.hasOwnProperty = hop;
+				if (typeof obj.hasOwnProperty !== 'function') {throw 0;}
+			} catch (e) {
+				obj.hasOwnProperty = hop;
+			}
+		};
+	}());
+	
+	
+	
+// ----------------------------------------------------------------------------
 
 	/**
 	 * EventController Class
@@ -430,7 +451,12 @@ var Events = (new (function() {
 		event       = event,
 		target      = target,
 		namespace   = null;
-	
+
+		// Make sure the event object has a hasOwnProperty method
+		if (typeof event.hasOwnProperty !== 'function') {
+			addHasOwnProperty(event);
+		}
+		
 		/**
 		 * Event properties
 		 */

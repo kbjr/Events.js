@@ -150,7 +150,7 @@ Events.bind(myElement, 'mouseleave.myNamespace', function() {
 
 h3. Special Events
 
-Special events are a way of adding non-supported events. For example, the @mouseenter@ and @mouseleave@ events are IE proprietary. Therefore, in order to make the cross-browser compatible, they were implemented as special events. The @hashchange@ event is alse handled with specialEvents. The specific function definitions for dealing with special events is above in the Functions section.
+Special events are a way of adding non-supported or custom events. For example, the @mouseenter@ and @mouseleave@ events are IE proprietary. Therefore, in order to make the cross-browser compatible, they were implemented as special events. The @hashchange@ event is als0 handled with specialEvents. The specific function definitions for dealing with special events are above in the Functions section.
 
 h3. Keystroke Handling
 
