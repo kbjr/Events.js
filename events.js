@@ -1362,7 +1362,7 @@ if (typeof window.YourBrowserFailsError === 'undefined') {
 		// Set the error message
 		this.name    = 'YourBrowserFailsError';
 		this.message = msg;
-		this.stack   = err.stack || 'Could not get a stack. MORE FAILS!!';
+		this.stack   = err.stack || err.stacktrace || 'Could not get a stack. MORE FAILS!!';
 	};
 }
 
