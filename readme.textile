@@ -3,7 +3,7 @@ h1. Events.js
 h3. A super-awesome JavaScript event handler library
 
 Author: James Brumond
-Version: 0.2.1-beta
+Version: 0.2.2-beta
 
 Copyright 2011 James Brumond
 Dual licensed under MIT and GPL
@@ -22,7 +22,7 @@ h2. Samples
 <pre><code>(function() {
 
     // Wait for the DOM to load before adding our hover events
-    Events.bind(window, 'load', function(e) {
+    Events.ready(function() {
         var elem = document.getElementById('myElement');
         // Do something when we hover over the element
         Events.bind(elem, 'mouseenter', function(e) {
@@ -49,6 +49,18 @@ h2. Samples
 h2. API
 
 h3. Functions
+
+h4. string Events.version ( void )
+
+Gets the current version string for Events.js.
+
+h4. void Events.ready ( function callback )
+
+If the DOM has already loaded, the function is called immediately. If not, the function is called on the @window.onload@ event.
+
+<pre><code>Events.ready(function() {
+	// Do something when the DOM is ready
+});</code></pre>
 
 h4. void Events.bind ( object target, string event, function callback )
 
