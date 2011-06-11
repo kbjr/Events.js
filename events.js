@@ -6,7 +6,7 @@
 | A super-awesome JavaScript event handler library.
 |
 | @author     James Brumond
-| @version    0.2.1-beta
+| @version    0.2.2-beta
 | @copyright  Copyright 2011 James Brumond
 | @license    Dual licensed under MIT and GPL
 |
@@ -17,6 +17,23 @@ var Events = (new (function() {
 	var
 	self = this,
 	handlers = [ ],
+	
+	__version = '0.2.2-beta',
+	
+	domLoaded = (function() {
+		var flag = (document.readyState === 'complete');
+		if (! flag) {
+			function onload() { flag = true; }
+			if (window.addEventListener) {
+				window.addEventListener('load', onload, false);
+			} else if (window.attachEvent) {
+				window.attachEvent('onload', onload);
+			}
+		}
+		return function() {
+			return flag;
+		};
+	}()),
 	
 	// Special events
 	specialEvents = {
@@ -1118,6 +1135,28 @@ var Events = (new (function() {
 // ----------------------------------------------------------------------------
 //  External functions
 	
+	self.version = function() {
+		return __version;
+	};
+	
+	self.ready = (function() {
+		var queue = [ ], bound = false;
+		return function(func) {
+			if (domLoaded()) {
+				func();
+			} else {
+				queue.push(func);
+				if (! bound) {
+					Events.bind(window, 'load', function() {
+						for (var i = 0, c = queue.length; i < c; i++) {
+							queue[i]();
+						}
+					});
+				}
+			}
+		};
+	}());
+	
 	self.log = (function() {
 		var logger = null,
 		getLogger = function() {
@@ -1362,7 +1401,7 @@ if (typeof window.YourBrowserFailsError === 'undefined') {
 		// Set the error message
 		this.name    = 'YourBrowserFailsError';
 		this.message = msg;
-		this.stack   = err.stack || 'Could not get a stack. MORE FAILS!!';
+		this.stack   = err.stack || err.stacktrace || 'Could not get a stack. MORE FAILS!!';
 	};
 }
 
