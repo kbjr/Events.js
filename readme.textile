@@ -59,7 +59,7 @@ h4. void Events.ready ( function callback )
 If the DOM has already loaded, the function is called immediately. If not, the function is called on the @window.onload@ event.
 
 <pre><code>Events.ready(function() {
-	// Do something when the DOM is ready
+    // Do something when the DOM is ready
 });</code></pre>
 
 h4. void Events.bind ( object target, string event, function callback )
@@ -162,7 +162,7 @@ Events.bind(myElement, 'mouseleave.myNamespace', function() {
 
 h3. Special Events
 
-Special events are a way of adding non-supported or custom events. For example, the @mouseenter@ and @mouseleave@ events are IE proprietary. Therefore, in order to make the cross-browser compatible, they were implemented as special events. The @hashchange@ event is als0 handled with specialEvents. The specific function definitions for dealing with special events are above in the Functions section.
+Special events are a way of adding non-supported or custom events. For example, the @mouseenter@ and @mouseleave@ events are IE proprietary. Therefore, in order to make them cross-browser compatible, they were implemented as special events. The @hashchange@ event is also handled with specialEvents. The specific function definitions for dealing with special events are above in the Functions section.
 
 h3. Keystroke Handling
 
