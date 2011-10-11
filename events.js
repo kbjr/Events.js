@@ -1339,9 +1339,11 @@ var Events = (new (function() {
 							info.newValue, info.attrName, info.attrChange);
 					break;
 				}
-				Jsk.utils.forIn(extra, function(i) {
-					obj[i] = extra[i];
-				});
+				for (var i in extra) {
+					if (extra.hasOwnProperty(i)) {
+						obj[i] = extra[i];
+					}
+				}
 				return obj;
 			};
 		}
