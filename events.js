@@ -6,7 +6,7 @@
 | A super-awesome JavaScript event handler library.
 |
 | @author     James Brumond
-| @version    0.2.2-beta
+| @version    0.2.3-beta
 | @copyright  Copyright 2011 James Brumond
 | @license    Dual licensed under MIT and GPL
 |
@@ -18,7 +18,7 @@ var Events = (new (function() {
 	self = this,
 	handlers = [ ],
 	
-	__version = '0.2.2-beta',
+	__version = '0.2.3-beta',
 	
 	domLoaded = (function() {
 		var flag = (document.readyState === 'complete');
@@ -57,7 +57,7 @@ var Events = (new (function() {
 				HashChangeFix.removeEventListener(func);
 			},
 			invoke: function(target) {
-				HashChangeFix.despatchEvent();
+				HashChangeFix.dispatchEvent();
 			}
 		},
 		keystroke: {
@@ -999,12 +999,12 @@ var Events = (new (function() {
 	 */
 	invokeListener = function(target, event, info) {
 		var evt;
-		if (target.despatchEvent) {
+		if (target.dispatchEvent) {
 			if (startsWithOn.test(event)) {
 				event = event.substring(2);
 			}
 			evt = self.buildEventObject(target, event, info);
-			target.despatchEvent(evt);
+			target.dispatchEvent(evt);
 		} else if (target.fireEvent) {
 			if (! startsWithDOM.test(event) && ! startsWithOn.test(event)) {
 				event = 'on' + event;
@@ -1190,7 +1190,7 @@ var Events = (new (function() {
 			// Do the logging
 			getLogger().apply(this, args);
 		};
-    }());
+	}());
 	
 	self.bind = function(target, event, func) {
 		var handler = getEventHandler(target);
@@ -1256,7 +1256,7 @@ var Events = (new (function() {
 						if (document.implementation.hasFeature(i, '2.0') || window[i.substring(0, i.length - 1)]) { i = 'Events'; }
 						// We found our module, stop looping
 						result = i;
-						return false;
+						break;
 					}
 				}
 			}
