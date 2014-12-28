@@ -1200,7 +1200,9 @@ var Events = (new (function() {
 	
 	self.unbind = function(target, event) {
 		var handler = getEventHandler(target);
-		return handler.removeEvent(event);
+		if (handler) {
+			return handler.removeEvent(event);
+		}
 	};
 	
 	self.specialEvents = {
