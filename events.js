@@ -926,7 +926,7 @@ var Events = (new (function() {
 			event = segments.shift();
 			
 			// Remove the namespace
-			events[event].removeNamespace(segments);
+			if (events[event] !== undefined) { events[event].removeNamespace(segments); }
 		};
 	
 	},
